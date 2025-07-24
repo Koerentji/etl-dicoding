@@ -1,6 +1,9 @@
 import pytest
 from unittest.mock import Mock, patch
 import requests
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.extract import scrape_page, scrape_products
 
 class TestExtract:

@@ -3,6 +3,9 @@ import pandas as pd
 import tempfile
 import os
 from unittest.mock import Mock, patch, MagicMock
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.load import load_to_csv, load_to_google_sheets, load_to_postgresql
 
 class TestLoad:
