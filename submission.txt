@@ -1,0 +1,147 @@
+# Fashion Studio ETL Pipeline - Submission Guide
+
+## Cara Menjalankan Skrip ETL Pipeline
+
+Untuk menjalankan pipeline ETL lengkap:
+```bash
+python main.py
+```
+
+## Instalasi Dependencies
+
+Sebelum menjalankan, install semua dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Cara Menjalankan Unit Test
+
+Untuk menjalankan semua unit test:
+```bash
+pytest tests/
+```
+
+Untuk menjalankan test dengan output verbose:
+```bash
+pytest tests/ -v
+```
+
+Untuk menjalankan test spesifik:
+```bash
+pytest tests/test_extract.py
+pytest tests/test_transform.py
+pytest tests/test_load.py
+```
+
+## Cara Menjalankan Test Coverage
+
+Untuk mengukur test coverage:
+```bash
+coverage run -m pytest tests/
+```
+
+Untuk melihat laporan coverage di terminal:
+```bash
+coverage report -m
+```
+
+Untuk membuat laporan HTML:
+```bash
+coverage html
+```
+
+Kemudian buka file `htmlcov/index.html` di browser untuk melihat laporan detail.
+
+## Struktur Proyek
+
+```
+fashion-studio-ETL/
+├── utils/
+│   ├── __init__.py
+│   ├── extract.py         # Modul ekstraksi data
+│   ├── transform.py       # Modul transformasi data
+│   └── load.py           # Modul pemuatan data
+├── tests/
+│   ├── test_extract.py   # Unit test untuk ekstraksi
+│   ├── test_transform.py # Unit test untuk transformasi
+│   └── test_load.py      # Unit test untuk pemuatan
+├── main.py               # Skrip utama pipeline ETL
+├── requirements.txt      # Dependencies
+├── submission.txt        # Panduan ini
+├── google-sheets-api.json # Kredensial Google Sheets (buat sendiri)
+└── products.csv          # Output data (dibuat otomatis)
+```
+
+## Konfigurasi Google Sheets
+
+1. Buat project di Google Cloud Console
+2. Enable Google Sheets API dan Google Drive API
+3. Buat Service Account dan download kredensial JSON
+4. Rename file kredensial menjadi `google-sheets-api.json`
+5. Letakkan file di root directory proyek
+
+## URL Google Sheets
+
+Setelah menjalankan pipeline, Google Sheets akan dibuat otomatis dengan nama "Fashion Studio ETL Data".
+URL akan ditampilkan di console output.
+
+## Konfigurasi PostgreSQL
+
+Edit konfigurasi database di `utils/load.py`:
+```python
+db_config = {
+    'host': 'localhost',
+    'database': 'fashion_studio',
+    'user': 'postgres',
+    'password': 'password',
+    'port': '5432'
+}
+```
+
+## Fitur Pipeline ETL
+
+### Extract (Ekstraksi)
+- Scraping data dari 50 halaman https://fashion-studio.dicoding.dev
+- Error handling untuk masalah jaringan
+- Timestamp untuk setiap data yang diambil
+
+### Transform (Transformasi)
+- Konversi harga dari USD ke IDR (1 USD = 16,000 IDR)
+- Pembersihan data rating, colors, size, gender
+- Penghapusan data duplikat dan tidak valid
+- Validasi tipe data
+
+### Load (Pemuatan)
+- Simpan ke CSV (products.csv)
+- Simpan ke Google Sheets
+- Simpan ke PostgreSQL database
+
+## Target Test Coverage
+
+Target test coverage: 80-100%
+Semua modul memiliki unit test yang komprehensif dengan berbagai skenario.
+
+## Kriteria Penilaian
+
+1. **ETL Pipeline Modular**: ✅ Terpisah dalam utils/extract.py, transform.py, load.py
+2. **3 Repositori Data**: ✅ CSV, Google Sheets, PostgreSQL
+3. **Unit Test Komprehensif**: ✅ Test coverage tinggi dengan pytest
+
+## Troubleshooting
+
+### Error "Module not found"
+```bash
+pip install -r requirements.txt
+```
+
+### Error Google Sheets API
+- Pastikan file `google-sheets-api.json` ada
+- Pastikan Google Sheets API dan Drive API sudah diaktifkan
+
+### Error PostgreSQL
+- Pastikan PostgreSQL server berjalan
+- Periksa konfigurasi koneksi di `utils/load.py`
+
+### Error saat scraping
+- Periksa koneksi internet
+- Website mungkin sedang down atau mengalami perubahan struktur
