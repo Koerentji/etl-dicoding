@@ -1,4 +1,4 @@
-# Project Instructions
+# Fashion Studio ETL Project
 
 ## How to Run the Project
 
